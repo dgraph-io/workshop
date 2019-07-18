@@ -1,41 +1,38 @@
 # Building Flock with Dgraph 
 ---
-Howdy, Welcome to "Building Flock with Dgraph". 
 
-Flock is a simple graph model build using the tweet data available from Twitter API. We build the graph in Dgraph using these tweets and run some fun and intersting queries on top of it.
+Welcome to "Building Flock with Dgraph." 
 
-Here are the learning goals of the workshop, by the end of it you should become familiar with,
-- The approach towards building applications on Dgraph.
-- Querying and mutations in Dgraph.   
+Flock builds a Graph model on Dgraph. It makes use of the tweets data obtained from twitter API. 
+
+Here are the learning goals of the workshop, 
+-  Learn the approach towards designing and building applications on Dgraph.
+- Understand Querying and mutations in Dgraph.  
 
 We would be using Flock as an example to meet the learning goals. 
 
 # Software requirements
 ---
-Good news is that we would be running the code samples and the project with Docker containers and 
-docker-compose, Here are the installation links, 
-
+Flock is run using Docker-compose. Here are the installation links for Docker and Docker-compose, 
 - [Installing docker](https://docs.docker.com/install/)
 - [Installing docker compose](https://docs.docker.com/compose/install/)
 
 # Chapters
 ---
-The workshop is composed of three sections, the first one optional, which is meant for absolute beginners Dgraph. 
+The workshop is composed of three sections. The first one optional, it's is meant for absolute beginners in Dgraph. 
 
 - [Getting started with Dgraph](./1-getting-gtarted/README.md)
   
- This chapter is the guide for getting started with Dgraph. Want to understand how to install and run Dgraph? 
- Curious to know fundamentals like creating nodes, edges, and traversing them? Explore them using Dgraph's Ratel-UI.
+ This chapter is the guide for getting started with Dgraph. It deals with basic operations like installation,
+nodes, edges, queries, and mutations. 
 
 - [Designing flock and its mutations](./2-flock-mutations/README.md)
   
-Here you'll learn about Flock's design and schema, the nuts and bolts of bringing your application
-graph to life using mutations with upserts. Here is where Flock get's built. 
+In this chapter, you'll learn about Flock's design and schema. We'll decipher the process of designing the application graph. The chapter ends with upserts in Dgraph.
 
 - [Querying Flock](./3-flock-querying/README.md)
 
-In the last chapter, we've built Flock using data available from twitter's API. Let's construct some
-interesting graph queries in this chapter. We've run through queries related to Searching nodes, 
+In this chapter, we'll be learning about querying in Dgraph. These include searching nodes, 
 filtering, traversing, reverse traversing, date-time queries, and much more.
   
 
@@ -43,7 +40,7 @@ filtering, traversing, reverse traversing, date-time queries, and much more.
 ---
 This workshop is very new, so there's a possibility that some things might be missing or wrong.
 
-If you find anything that seems broken, please file an issue. Or even better, send a pull request! 
+If you find anything that seems broken, please file an issue. Alternatively, even better, send a pull request! 
 
 # Resources
 - [Docs](https://docs.dgraph.io)
