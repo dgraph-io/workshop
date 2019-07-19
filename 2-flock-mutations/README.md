@@ -63,7 +63,7 @@ Thus, the relationship between `Tweets` and `Users` would be `Author` and `Menti
 
 **Step 3:** Draw the application graph with Nodes and Edges 
 
-![Graph-3](./assets/graph-3.jpg)
+![Graph-3](./assets/graph-3.JPG)
 
 ---
 
@@ -73,11 +73,11 @@ Let's revisit the fields obtained from the tweet and associate them with either 
 
 Let's identify the fields that would belong to a tweet, 
 
-![Graph-4](./assets/graph-4.jpg)
+![Graph-4](./assets/graph-4.JPG)
 
 Let's identify the fields that would belong to a User, 
 
-![Graph-5](./assets/graph-5.jpg)
+![Graph-5](./assets/graph-5.JPG)
 
 Le's add these to the graph, 
 
@@ -174,7 +174,7 @@ For every tweet fetched,
  - Check whether the `Tweet` or the `User` node already exists using upserts.
  -  Create the nodes if they don't exist. 
 This applies to `Users` mentioned in the tweet too.
- - Create the `Author` and `Mention` edges from the `Tweet` node to the `User` node. It can be achieved in one mutation calls. 
+ - Create the `Author` and `Mention` edges from the `Tweet` node to the `User` node. It can be achieved in one mutation call. 
   
 ---
 
