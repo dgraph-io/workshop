@@ -98,7 +98,7 @@ friend: uid
 - Indexes help you speed up queries on  specified fields. 
 - For example, if your application needs to search a user by
 their `name`, creating an index on the `name` field would be a good idea. The same applies to
-other fields in your application data graph and edges too. 
+other fields in your application data graph and edges. 
 - The index for a field has to be mentioned in its schema in the following format. 
 `@index(<index-type>)` 
 - Let's add an index to each of the 3 fields in our schema. 
