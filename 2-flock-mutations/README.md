@@ -95,7 +95,7 @@ Here are questions one could have during the schema design process,
 
 Q: Is it necessary to normalize the info in a tweet into a `Tweet` and `User` node? 
   
-A: Though it still works with doing it, the model would be highly denormalized. The author's info would be duplicated in every tweet. So this hampers, 
+A: Though it's not necessary, if not done the model would be highly denormalized. The author's info would be duplicated in every tweet. So this hampers, 
 
 - Updates and deletes. 
 Let's say. The user wants to change the profile picture. With the denormalized approach, the new `profile_picture_url` update has to be propagated to all the tweets of the user. 
