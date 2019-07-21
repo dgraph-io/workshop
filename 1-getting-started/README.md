@@ -115,7 +115,6 @@ Types string and dateTime have several index types.
 
 - The edges (represented by type uid in the schema) also have particular indices. The @count index helps 
   to achieve an efficient operation to count the number of edges.
-
 ---
 
   Let's use Ratel to perform the first set of operations. Go to `localhost:8000`. Welcome to Ratel. 
