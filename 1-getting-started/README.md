@@ -22,7 +22,7 @@
 ## Installing and running Dgraph using docker-compose
 - Download the `docker-compose.yml` present in this folder.
 - Export the persistent data directory. Since Dgraph is run using Docker containers, it is essential
-  to mount a directory on the host machine to persist the data across multiple runs. 
+to mount a directory on the host machine to persist the data across multiple runs. 
 ```sh
 $ mkdir ./data
 $ export DATA_DIR=$(pwd)/data
@@ -95,7 +95,8 @@ friend: uid
 - Schemas are flexible in Dgraph. One could modify them anytime. 
 
 ### Creating indexes
-- Indexes help you speed up queries on  specified fields. 
+- Indexes help you speed up queries. 
+- An index has to be set on a predicate only if it's required for the queries. 
 - For example, if your application needs to search a user by
 their `name`, creating an index on the `name` field would be a good idea. The same applies to
 other fields in your application data graph and edges. 
@@ -109,14 +110,12 @@ age: int @index(int) .
 friend: uid @count .
 ```
 
-- For the data types int, float, bool, and geo each: Their index types are also named int, 
-  float, bool, and geo. Types string and dateTime have several index types.
+- For the data types int, float, bool, and geo each: Their index types are also named int, float, bool, and geo.
+Types string and dateTime have several index types.
 
 - The edges (represented by type uid in the schema) also have particular indices. The @count index helps 
   to achieve an efficient operation to count the number of edges.
 
-- In the sessions to follow we would discuss in detail about different types of index and their 
-  relevance. 
 ---
 
   Let's use Ratel to perform the first set of operations. Go to `localhost:8000`. Welcome to Ratel. 
