@@ -3,9 +3,21 @@
 In this chapter, we'll be learning about querying in Dgraph. These include searching nodes, 
 filtering, traversing, reverse traversing, date-time queries, and much more.
 
----
+Dgraph's query language is called GraphQL+-. It's inspired by original GraphQL spec, but slightly modified. The modifications were necessary to overcome the shortcomings of GraphQL as a query language for a database. 
 
-## Find hashtags from the nodes
+---
+ # Node selection 
+ One of the common operation in Dgraph is to select one or more node based on certain criteria. 
+
+Dgraph's inbuilt functions like `has`, `ge`, `eq` help you express the creteria for selection of nodes in the query. 
+
+In our first query we'll be selecting nodes based on existance of a predicate/property using the `has` function. 
+
+Here is structure of the query, 
+![query-structure](./assets/query-structure-2.JPG)
+
+
+
 ```sh
 {
     hashtag_query(func: has(hashtags), first: 10, offset: 30) {
