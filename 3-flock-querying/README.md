@@ -5,16 +5,18 @@ filtering, traversing, reverse traversing, date-time queries, and much more.
 
 Dgraph's query language is called GraphQL+-. It's inspired by original GraphQL spec, but slightly modified. The modifications were necessary to overcome the shortcomings of GraphQL as a query language for a database. 
 
+Let's recap the graph model of flock,
+
+![Graph](./assets/graph-3.JPG)
 ---
+
  # Node selection 
+ ## Query 1: Search for hashtags
  One of the common operation in Dgraph is to select one or more node based on certain criteria. 
 
 Dgraph's inbuilt functions like `has`, `ge`, `eq` help you express the creteria for selection of nodes in the query. 
 
 In our first query we'll be selecting nodes based on existance of a predicate/property using the `has` function. 
-
-Here is structure of the query, 
-![query-structure](./assets/query-structure-2.JPG)
 
 
 
@@ -25,9 +27,33 @@ Here is structure of the query,
     }
 }
 ```
+
+Here is structure of the query, 
+![query-structure](./assets/query-structure-2.JPG)
+
+
+The query request to "**Select all nodes which has hashtags in it**". In the result we request only for the `hashtags`, hence the other properties of the node will not be returned in the result. This is similar **select a, b,c** in SQL. 
+
+In the animation below you could see that only the nodes with `hashtags` predicate/property is selected. 
+
+![Query in action](http://play.minio.io/my-test/query-gif-1.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=Q3AM3UQ867SPQQA43P2F%2F20190722%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190722T042355Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=3bb18c3f523dc94b1ec767ed6c47b85aa3264b09d40ac12b276cc832b96cf613)
+
+
+Let's execute the query in Ratel. From the result, click on any of the nodes and copy a `hashtag`. We'll be using this `hashtag` to run the next query. 
+In the image below you could see that we have chosen the `hastag` "SecretOfHappyLife". 
+
 ![Query-1](./assets/1.png)
 
+
+It's important to notice that the above query is different from "**Give me all the nodes/tweets with specific hashtag #xyz**".
+
 ---
+
+## Query 2: Find tweets with a specific hashtag
+Let's query for nodes/tweets with hashtag "SecretOfHappyLife". You should the hashtag which has been copied from the last query. 
+
+The structure of the query is same as the last one. But, instead of `has` function, we'll be using the `eq` function. 
+
 
 ```sh
 {
@@ -41,24 +67,66 @@ Here is structure of the query,
 }
 ```
 
+In this case, we are querying for a value of a predicate. This needs index to be set on `hashtags` to speed up the operation. 
 
-![Query-2](./assets/2.png)
+Let's add the follow schema using Ratel's schema editor. 
+
+```sh
+hashtags: [string] @index(exact)
+```
+
+The [Getting started guide](../1-getting-started/Readme.md) has details about adding schema using Ratel.
+
+Let's execute the query using Ratel, 
+
+
+![Query 2](./assets/2.png)
 
 ---
+## Query 4: Finding Authors of tweets with given hashtag.
+
+Let's extend the last query to find authors of the tweets with the hashtag "SecretOfHappyLife"
+
+
+---
+
+## Query 3: Find all nodes/users with a user_id predicate.
+
+This query is similar to Query 1. 
+
 
 ```sh
 {
-  dataquery(func: has(screen_name), first: 10, offset: 40) {
+  dataquery(func: has(user_id), first: 10, offset: 40) {
     screen_name
   }
 }
+
 ```
 
-![Query-3](./assets/3.png)
+Let's execute the query and we should obtain the screen_names of users. Since we have set the `first` parameter to 10, the result should have maximum of 10 nodes. 
 
+
+
+![Query 3](./assets/3.png)
+
+
+Copy one of the `user_id` from the result.
 
 ---
+## Query 4: Find the `Tweets of a user`. 
 
+Let's use the `user_id` we just obtained and fetch all the tweets of the User. 
+
+We need to modify the schema to add a `string` index to `user_id`. In the [last chapter](../2-flock-mutations/Readme.md) we added the `@upsert` directive to the `user_id` field. 
+
+Add the following modification to the `user_id` field in the schema using Ratel, 
+
+```sh
+user_id: string @index(exact) @upsert .
+```
+
+Before we run the query 
 
 ```sh
 {
