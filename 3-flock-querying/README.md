@@ -11,7 +11,9 @@ Let's recap the graph model of flock,
 ---
 
  # Node selection 
- ## Query 1: Search for hashtags
+ ## Query 1: 
+ Search for hashtags
+ 
  One of the common operation in Dgraph is to select one or more node based on certain criteria. 
 
 Dgraph's inbuilt functions like `has`, `ge`, `eq` help you express the creteria for selection of nodes in the query. 
@@ -34,30 +36,32 @@ Here is structure of the query,
 
 The query request to "**Select all nodes which has hashtags in it**". In the result we request only for the `hashtags`, hence the other properties of the node will not be returned in the result. This is similar **select a, b,c** in SQL. 
 
-In the animation below you could see that only the nodes with `hashtags` predicate/property is selected. 
+In the animation below you could see that only the nodes with non-empty values for `hashtags` predicate/property is selected. 
 
 ![Query in action](http://play.minio.io/my-test/query-gif-1.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=Q3AM3UQ867SPQQA43P2F%2F20190722%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190722T042355Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=3bb18c3f523dc94b1ec767ed6c47b85aa3264b09d40ac12b276cc832b96cf613)
 
 
 Let's execute the query in Ratel. From the result, click on any of the nodes and copy a `hashtag`. We'll be using this `hashtag` to run the next query. 
-In the image below you could see that we have chosen the `hastag` "SecretOfHappyLife". 
+In the image below you could see that we have chosen the `hastag` "BOOM". 
 
-![Query-1](./assets/1.png)
+![Query-1](./assets/query-1.png)
 
 
 It's important to notice that the above query is different from "**Give me all the nodes/tweets with specific hashtag #xyz**".
 
 ---
 
-## Query 2: Find tweets with a specific hashtag
-Let's query for nodes/tweets with hashtag "SecretOfHappyLife". You should the hashtag which has been copied from the last query. 
+## Query 2: 
+Find tweets with a specific hashtag.
+
+Let's query for nodes/tweets with hashtag "BOOM". You should the hashtag which has been copied from the last query. 
 
 The structure of the query is same as the last one. But, instead of `has` function, we'll be using the `eq` function. 
 
 
 ```sh
 {
-    dataquery(func: eq(hashtags, "SecretOfHappyLife")) {
+    dataquery(func: eq(hashtags, "BOOM")) {
         uid
         id_str
         retweet
@@ -80,17 +84,30 @@ The [Getting started guide](../1-getting-started/Readme.md) has details about ad
 Let's execute the query using Ratel, 
 
 
-![Query 2](./assets/2.png)
-
----
-## Query 4: Finding Authors of tweets with given hashtag.
-
-Let's extend the last query to find authors of the tweets with the hashtag "SecretOfHappyLife"
-
+![Query 2](./assets/query-2.png)
 
 ---
 
-## Query 3: Find all nodes/users with a user_id predicate.
+## Query 3: 
+Find authors of tweets of a given hashtag.
+
+Let's extend the last query to find authors of the tweets with the hashtag "BOOM".
+
+The root level query finds the tweets based on the the hashtag. The first level nested query does the graph traversal along the author edge. This gives us the final result. 
+
+
+
+![query-structure](./assets/query-structure-3.JPG)
+
+Every level of nested query further traverses the graph. Each level will be using the nodes selected in its previous level as the starting point.
+
+![Query-animation](http://play.minio.io/my-test/query-gif-2.GIF?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=Q3AM3UQ867SPQQA43P2F%2F20190722%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190722T143319Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=b688b8406b36c2e656b87b318360cbbb46b5943be90264de0ca1c12762ead514)
+
+---
+
+
+## Query 4: 
+Find all nodes/users with a user_id predicate.
 
 This query is similar to Query 1. 
 
@@ -114,7 +131,9 @@ Let's execute the query and we should obtain the screen_names of users. Since we
 Copy one of the `user_id` from the result.
 
 ---
-## Query 4: Find the `Tweets of a user`. 
+
+## Query 5: 
+Find the `Tweets of a user`. 
 
 Let's use the `user_id` we just obtained and fetch all the tweets of the User. 
 
@@ -126,7 +145,7 @@ Add the following modification to the `user_id` field in the schema using Ratel,
 user_id: string @index(exact) @upsert .
 ```
 
-Before we run the query 
+Here is the query, 
 
 ```sh
 {
@@ -143,9 +162,14 @@ Before we run the query
 }
 ```
 
+Let's run this on Ratel.
+
 ![Query-4](./assets/4.png)
 
 ---
+
+## Query 6: 
+Find users with highest number of mentions. 
 
 ```sh
 {
@@ -172,6 +196,9 @@ Before we run the query
 
 ---
 
+## Query 7: 
+Find users with highest number tweets.
+
 ```
 {
   var(func: has(user_id)) {
@@ -194,34 +221,9 @@ Before we run the query
 ![Query-7](./assets/7.png)
 
 ---
-```sh
-{
-  dataquery(func: has(user_id), first: 3, offset: 10) {
-    user_id
-  }
-}
-```
-![Query-8](./assets/8.png)
 
----
-```sh
-{
-  dataquery(func: eq(user_id, "1138630994339123201")) {
-    uid
-    screen_name
-    user_id
-    user_name
-    profile_banner_url
-    profile_image_url
-    friends_count
-    description
-  }
-}
-
-```
-![Query-9](./assets/9.png)
-
----
+## Query 8: 
+Find tweets which are created after given time.
 
 ```sh
 {
@@ -235,6 +237,9 @@ Before we run the query
 ```
 
 ---
+
+## Query 9: 
+Find tweets of user. Tweets are filtered by their date of creation.
 
 ```sh
 {
@@ -251,21 +256,9 @@ Before we run the query
 
 ---
 
-```sh
-{
-  dataquery(func: has(screen_name), first: 3, offset: 0) @cascade {
-    screen_name
-    ~author @filter(ge(created_at, "2019-07-02T19:03:12Z")) {
-      created_at
-    }
-  }
-}
+## Query 10: 
+Find authors ordered by number of tweets. Also fetch their tweets filtered by their date of creation. 
 
-```
-
-![Query-11](./assets/11.png)
-
----
 
 ```sh
 {
