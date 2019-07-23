@@ -1,24 +1,22 @@
-# Flock Querying
-
+# Querying in Flock
 In this chapter, we'll be learning about querying in Dgraph. These include searching nodes, 
 filtering, traversing, reverse traversing, date-time queries, and much more.
 
-Dgraph's query language is called GraphQL+-. It's inspired by original GraphQL spec, but slightly modified. The modifications were necessary to overcome the shortcomings of GraphQL as a query language for a database. 
+Dgraph's query language is called GraphQL+-. It's inspired by original GraphQL spec but slightly modified. The modifications were necessary to overcome the shortcomings of GraphQL as a query language for a database. 
 
-Let's recap the graph model of flock,
+Let's recap the graph model of the flock,
 
 ![Graph](./assets/graph-3.JPG)
 ---
 
- # Node selection 
  ## Query 1: 
- Search for hashtags
- 
- One of the common operation in Dgraph is to select one or more node based on certain criteria. 
+ **Search for hashtags**
 
-Dgraph's inbuilt functions like `has`, `ge`, `eq` help you express the creteria for selection of nodes in the query. 
+ One of the standard operation in Dgraph is to select one or more node based on specific criteria. 
 
-In our first query we'll be selecting nodes based on existance of a predicate/property using the `has` function. 
+Dgraph's inbuilt functions like `has`, `ge`, `eq` help you express the criteria for the selection of nodes in the query. 
+
+In our first query, we'll be selecting nodes based on existence of a predicate/property using the `has` function. 
 
 
 
@@ -34,29 +32,29 @@ Here is structure of the query,
 ![query-structure](./assets/query-structure-2.JPG)
 
 
-The query request to "**Select all nodes which has hashtags in it**". In the result we request only for the `hashtags`, hence the other properties of the node will not be returned in the result. This is similar **select a, b,c** in SQL. 
+The query request to "**Select all nodes which has hashtags in it**". In the result we request only for the `hashtags`, hence the other predicates of the node will not be returned. This is similar **select a, b,c** in SQL. 
 
-In the animation below you could see that only the nodes with non-empty values for `hashtags` predicate/property is selected. 
+In the animation below, you could see that only the nodes with non-empty values for `hashtags` predicate/property are selected. 
 
 ![Query in action](http://play.minio.io/my-test/query-gif-1.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=Q3AM3UQ867SPQQA43P2F%2F20190722%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190722T042355Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=3bb18c3f523dc94b1ec767ed6c47b85aa3264b09d40ac12b276cc832b96cf613)
 
 
 Let's execute the query in Ratel. From the result, click on any of the nodes and copy a `hashtag`. We'll be using this `hashtag` to run the next query. 
-In the image below you could see that we have chosen the `hastag` "BOOM". 
+In the image below, you could see that we have chosen the `hastag` "BOOM". 
 
 ![Query-1](./assets/query-1.png)
 
 
-It's important to notice that the above query is different from "**Give me all the nodes/tweets with specific hashtag #xyz**".
+It's essential to notice that the above query is different from "**Give me all the nodes/tweets with specific hashtag #xyz**".
 
 ---
 
 ## Query 2: 
-Find tweets with a specific hashtag.
+**Find tweets with a specific hashtag**
 
-Let's query for nodes/tweets with hashtag "BOOM". You should the hashtag which has been copied from the last query. 
+Let's query for nodes/tweets with hashtag "BOOM". You should use the hashtag which has been copied from the last query. 
 
-The structure of the query is same as the last one. But, instead of `has` function, we'll be using the `eq` function. 
+The structure of the query is the same as the last one. However, instead of `has` function, we'll be using the `eq` function. 
 
 
 ```sh
@@ -71,9 +69,9 @@ The structure of the query is same as the last one. But, instead of `has` functi
 }
 ```
 
-In this case, we are querying for a value of a predicate. This needs index to be set on `hashtags` to speed up the operation. 
+In this case, we are querying for the value of a predicate. This needs index to be set on `hashtags` to speed up the operation. 
 
-Let's add the follow schema using Ratel's schema editor. 
+Let's add the following schema using Ratel's schema editor. 
 
 ```sh
 hashtags: [string] @index(exact)
@@ -89,28 +87,40 @@ Let's execute the query using Ratel,
 ---
 
 ## Query 3: 
-Find authors of tweets of a given hashtag.
+**Find authors of tweets of a given hashtag**
 
 Let's extend the last query to find authors of the tweets with the hashtag "BOOM".
 
-The root level query finds the tweets based on the the hashtag. The first level nested query does the graph traversal along the author edge. This gives us the final result. 
-
+The root-level query finds the tweets based on the hashtag. The first level nested query does the graph traversal along the author's edge. This gives us the final result. 
 
 
 ![query-structure](./assets/query-structure-3.JPG)
 
-Every level of nested query further traverses the graph. Each level will be using the nodes selected in its previous level as the starting point.
+Every level of the nested query further traverses the graph. Each level will be using the nodes selected in its previous level as the starting point.
 
 ![Query-animation](http://play.minio.io/my-test/query-gif-2.GIF?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=Q3AM3UQ867SPQQA43P2F%2F20190722%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190722T143319Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=b688b8406b36c2e656b87b318360cbbb46b5943be90264de0ca1c12762ead514)
 
 ---
 
+Dgraph doesn't enforce the direction of the edges. One could insert the `author` edge to point to a `Tweet` from an `Author`. The onus is on the application to enforce this. 
+
+In this case, Flock ensures that all the `author` edges point from a `tweet` node to a `user` node. 
+This makes it easier to select a `tweet` and traverse along the `author` edge to select the `users`. 
+
+But, how about the other way around? Can we start from `author` node and traverse along the `author` edge in the `reverse` direction to reach their `tweets`? 
+
+That's possible! It requires `@reverse` directive to be added. Here is an example, 
+
+```
+author: uid @reverse .`
+```
+
+---
 
 ## Query 4: 
-Find all nodes/users with a user_id predicate.
+**Find all nodes/users with a user_id predicate**
 
 This query is similar to Query 1. 
-
 
 ```sh
 {
@@ -121,7 +131,7 @@ This query is similar to Query 1.
 
 ```
 
-Let's execute the query and we should obtain the screen_names of users. Since we have set the `first` parameter to 10, the result should have maximum of 10 nodes. 
+Let's execute the query, and we should obtain the screen_names of users. Since we have set the `first` parameter to 10, the result should have a maximum of 10 nodes. 
 
 
 
@@ -133,7 +143,7 @@ Copy one of the `user_id` from the result.
 ---
 
 ## Query 5: 
-Find the `Tweets of a user`. 
+**Find the Tweets of a user.**
 
 Let's use the `user_id` we just obtained and fetch all the tweets of the User. 
 
@@ -169,7 +179,7 @@ Let's run this on Ratel.
 ---
 
 ## Query 6: 
-Find users with highest number of mentions. 
+*Find users with the highest number of mentions.*
 
 ```sh
 {
@@ -197,7 +207,7 @@ Find users with highest number of mentions.
 ---
 
 ## Query 7: 
-Find users with highest number tweets.
+Find users with the highest number of tweets.
 
 ```
 {
@@ -223,7 +233,7 @@ Find users with highest number tweets.
 ---
 
 ## Query 8: 
-Find tweets which are created after given time.
+Find tweets that are created after a given time.
 
 ```sh
 {
@@ -239,7 +249,7 @@ Find tweets which are created after given time.
 ---
 
 ## Query 9: 
-Find tweets of user. Tweets are filtered by their date of creation.
+Find tweets of a user. Tweets are filtered by their date of creation.
 
 ```sh
 {
@@ -257,7 +267,7 @@ Find tweets of user. Tweets are filtered by their date of creation.
 ---
 
 ## Query 10: 
-Find authors ordered by number of tweets. Also fetch their tweets filtered by their date of creation. 
+Find authors ordered by a number of tweets. Also, fetch their tweets filtered by their date of creation. 
 
 
 ```sh

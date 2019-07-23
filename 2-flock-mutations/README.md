@@ -112,11 +112,24 @@ between them.
 
 Schema and indices in Dgraph are flexible. These can be altered as your application needs to evolve. 
 
-Also, it's not compulsory to add all the predicates into the schema. Indices are used
+ It's not compulsory to add all the predicates into the schema. Indices are used
 to enhance query performance (not mutations). In the next chapter, we'll learn about adding
 index to schema based on the query requirements. 
 
-However, one needs to be mindful of upsert requirements during writes. 
+
+However, it's necesary to add entries for `edges` and the predicates those require `upserts` into the schema. 
+
+
+From the model we saw that there are two edges. 
+- `Author` 
+- `Mention`
+
+Edges are represented by `uid` keyword in the schema. Let's these entries to the schema using Ratel. 
+
+```
+mention: uid .
+author: uid .
+```
 
 ---
 
@@ -124,7 +137,7 @@ However, one needs to be mindful of upsert requirements during writes.
 
 Dgraph doesn't support primary keys. The uniqueness of the value of a predicate has to ensured manually with the help of upserts.
 
-In Flock, twitter handle has to be unique. Having more than a node for a User with a given 
+In Flock, twitter handle of users has to be unique. Having more than a node for a User with a given 
 twitter_handle would be invalid.
 
 Let's first list the predicates which need uniqueness constraint.
@@ -148,7 +161,7 @@ The steps below have to be executed in a single transaction,
 
 **Step 3:** Create the new node only if the node doesn't exist. 
 
-Again, the @upsert doesn't ensure the uniqueness of the fields. It only helps ensure the safety of the two-step transaction. 
+Again, the `@upsert` doesn't ensure the uniqueness of the fields. It only helps ensure the safety of the two-step transaction. 
 
 Refer to these docs to know more about upserts, 
 
