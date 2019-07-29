@@ -139,7 +139,7 @@ Here is the structure of the query.
 Every level of the nested query further traverses the graph. Each level will be using the nodes selected in its previous level as the starting point.
 
 
-![Query-animation](http://play.minio.io/my-test/query-gif-1.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=Q3AM3UQ867SPQQA43P2F%2F20190729%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190729T203837Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=26a9e35d55f2b391975000ab5782ef170b9bed05b577eeee3a911d5359a03d64)
+![Query-animation](http://play.minio.io/my-test/query-gif-2.GIF?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=Q3AM3UQ867SPQQA43P2F%2F20190729%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190729T211826Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=0aee78370db4ba7b74d0151a95bcce23d464c841614685349f27baa29698e12e)
 
 Run the query using Ratel.
 
