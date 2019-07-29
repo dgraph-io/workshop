@@ -187,12 +187,12 @@ Ratel displays the result as a graph on the right.
 Here is the format of the query.
 ```sh
 {
-  <Any-function-name>(func: anyofterms(<string property/predicate>, "Value to search for")) {
-    property-1/predicate-1 assocaited with the node  
-     .
-     .
-     .
-    property-n/predicate-1 assocaited with the node  
+  <query-block-name>(func: anyofterms(<string property/predicate>, "Value to search for")) {
+    property-1/predicate-1 associated with the node
+
+     ...
+
+    property-n/predicate-1 associated with the node
   }
 }
 ```
@@ -220,7 +220,7 @@ use it in the following query,
 
 Notice the JSON tab on the right! 
 
-The GraphQL syntax allows you to query for the fields you only need.
+The GraphQL+- syntax allows you to query for the fields you only need.
 
 Note: The first step in querying Dgraph is to select a node or set of nodes based on specific criteria. 
 
