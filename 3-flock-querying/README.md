@@ -4,7 +4,7 @@ filtering, traversing, reverse traversing, date-time queries, and much more.
 
 Dgraph's query language is called GraphQL+-. It's inspired by original GraphQL spec but slightly modified. The modifications were necessary to overcome the shortcomings of GraphQL as a query language for a database. 
 
-Let's recap the graph model of the flock,
+Let's recap the graph model of the Flock,
 
 ![Graph](./assets/graph-3.JPG)
 
@@ -17,7 +17,7 @@ Let's recap the graph model of the flock,
 
 Dgraph's inbuilt functions like `has`, `ge`, `eq` help you express the criteria for the selection of nodes in the query. 
 
-In our first query, we'll be selecting nodes based on existence of a predicate/property using the `has` function. 
+In our first query, we'll be selecting nodes based on the existence of a predicate/property using the `has` function. 
 
 
 ```sh
@@ -32,7 +32,7 @@ Here is structure of the query,
 ![query-structure](./assets/query-structure-2.JPG)
 
 
-The query request to "**Select all nodes which has hashtags in it**". In the result we request only for the `hashtags`, hence the other predicates of the node will not be returned. This is similar **select a, b,c** in SQL. 
+The query request to "**Select all nodes which have hashtags in it**". In a result, we request only for the `hashtags`. Hence the other predicates of the node will not be returned. This is similar **select a, b,c** in SQL. 
 
 In the animation below, you could see that only the nodes with non-empty values for `hashtags` predicate/property are selected. 
 
@@ -40,7 +40,7 @@ In the animation below, you could see that only the nodes with non-empty values 
 
 
 Let's execute the query in Ratel. From the result, click on any of the nodes and copy a `hashtag`. We'll be using this `hashtag` to run the next query. 
-In the image below, you could see that we have chosen the hastag `BOOM`. 
+In the image below, you could see that we have chosen the hashtag `BOOM`. 
 
 ![Query-1](./assets/query-1.png)
 
@@ -51,9 +51,9 @@ It's essential to notice that the above query is different from "**Give me all t
 
 ## Query 2: 
 
-We can also use filtering to add criterias for node selection. We can filter based any predicate/properties of a node. Indexes have to added to help improve the performance of these queries.
+We can also use filtering to add criteria for node selection. We can filter based on any predicate/properties of a node. Indexes have to be added to help improve the performance of these queries.
 
-In the following query let us filter the tweets based on their date and time of creation. Let us create a date time index for the `created_at` predicate. 
+In the following query, let us filter the tweets based on their date and time of creation. Let us create a date-time index for the `created_at` predicate. 
 
 ```sh
 created_at: dateTime @index(hour) .
@@ -61,7 +61,7 @@ created_at: dateTime @index(hour) .
 
 The [Getting started guide](../1-getting-started/Readme.md) has details about adding schema using Ratel.
 
-Here's the [reference to docs](https://docs.dgraph.io/query-language/#datetime-indices) to know more about datetime indexes in Dgraph.
+Here's the [reference to docs](https://docs.dgraph.io/query-language/#datetime-indices) to know more about DateTime indexes in Dgraph.
 
 ```sh
 {
@@ -136,7 +136,7 @@ Here is the structure of the query.
 
 ![query-structure](./assets/query-structure-3.JPG)
 
-Every level of the nested query further traverses the graph. Each level will be using the nodes selected in its previous level as the starting point.
+Every level of the nested query further traverses the graph. Each level will be using the nodes selected at its previous level as the starting point.
 
 
 ![Query-animation](http://play.minio.io/my-test/query-gif-2.GIF?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=Q3AM3UQ867SPQQA43P2F%2F20190729%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190729T211826Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=0aee78370db4ba7b74d0151a95bcce23d464c841614685349f27baa29698e12e)
@@ -145,17 +145,18 @@ Run the query using Ratel.
 
 ---
 
-## Note on direction of the edges
+## Note on the direction of the edges
 
-Dgraph doesn't enforce direction to an edge. From our modelling, the `author` edge is supposed to point to a `User` node from a `Tweet` node. But it would work the other way around too. The onus is on the application to enforce this. 
+Dgraph doesn't enforce direction to an edge. From our modeling, the `author` edge is supposed to point to a `User` node from a `Tweet` node. However, it would work the other way around too. The onus is on the application to enforce this. 
 
-In Flock, we've ensured that that all the `author` edges point from a `tweet` node to a `user` node. 
+In Flock, we've ensured that all the `author` edges point from a `tweet` node to a `user` node. 
 This makes it easier to select a `tweet` and traverse along the `author` edge to select the `users`. 
 
 But, how about the other way around? Can we start from `author` node and traverse along the `author` edge in the `reverse` direction to reach their `tweets`? 
 
 That's possible! It requires `@reverse` directive to be added to the schema, 
-```
+
+```sh
 author: uid @reverse .`
 ```
 
@@ -180,7 +181,7 @@ This query is similar to Query 1.
 Let's execute the query, and we should obtain the screen_names of users. Since we have set the `first` parameter to 10, the result should have a maximum of 10 nodes. 
 
 
-Copy one of the `user_id` from the result.
+Copy one of the `user_id` from the result. We'll be using it in our next query.
 
 ---
 
@@ -197,7 +198,7 @@ Add the following modification to the schema using Ratel,
 screen_name: string @index(term) @upsert .
 ```
 
-If you notice, we have used the term index for `screen_name`. A screen name in twitter could have multiple terms. Like `Francesc Campoy`, `Karthic Rao`, `Daniel Mai`! The `term` index lets one query for any term in the name. You could just search for `Francesc` and obtain the all the users who have the term in their screen names. 
+If you notice, we have used the term index for `screen_name`. A screen name on twitter could have multiple terms. Like `Francesc Campoy`, `Karthic Rao`, `Daniel Mai`! The `term` index lets one query for any term in the name. You could just search for `Francesc` and obtain all the users who have the term in their screen names. 
 
 
 Here is the query, 
@@ -231,13 +232,75 @@ Let's run this query on Ratel.
 
 ![Query-4](./assets/4.png)
 
-Note: If you run flock for a short duration, the user_id you've selected may not have tweets. They've exist because of the `mentions`. Use the next query find  `user_ids` or `screen_names` with lot of tweets.
+Note: If you run Flock for a short duration, the user_id you've selected may not have tweets. They've existed because of the `mentions`. Use the next query to find  `user_ids` or `screen_names` with a lot of tweets.
 
 ---
 
 
 ## Query 7: 
-Find users with the highest number of tweets.
+Find users with the highest number of tweets. 
+
+We'll be using the variable, count, and sort functionalities in this query.
+
+Nodes matched at in one block of a query can be stored in a variable and used elsewhere, either in a child block or a different query block. 
+
+Here's the link to [docs on variable blocks](https://docs.dgraph.io/query-language/#var-blocks).
+
+We already know from our model that the `author` edge points from a `Tweet` node to an `User` node. Which means the `~author` would traverse from a `User` node to their tweets. 
+
+
+The following query computes the number of `author` edge for each of the `User` nodes selected via the `has` function. What do you think the result would be?
+
+
+```sh
+{
+  count_edges(func: has(hashtags)) {
+    edge_count: count(author)
+  }
+}
+```
+
+
+![query-4](./assets/query-4.png)
+
+You guys guessed it right. Flock by design and implementation ensure that every `tweet` would have only one author.
+Hence, the result is always 1.
+
+---
+
+How about the query below?
+
+```sh
+{
+  count_edges(func: has(user_id)) {
+    edge_count: count(author)
+  }
+}
+```
+![Query-5](./assets/query-5.png)
+
+### The count is 0! But Why!!!? 
+The query above counts the number of `author` edge emerging out of `User` nodes. Again, Flock by its design and implementation ensure that all `author` edge points out of `Tweet` nodes and towards the `User` nodes. None of them emerge out of `User` nodes, and they point towards them. 
+
+For each of the `User` node, if we could find the number of `author` edge pointing towards them, it would give us the number of `tweets` by each `User`. Just simple tilde (~) in the above query would do the trick. 
+
+```sh
+{
+  count_edges(func: has(user_id)) {
+    edge_count: count(~author)
+  }
+}
+```
+
+
+---
+
+Let's define and decipher the query 7. That is to find the users with the highest number of tweets. 
+
+
+![query](./assets/7.jpg)
+
+Let's run the query using Ratel.
 
 ```
 {
@@ -255,7 +318,6 @@ Find users with the highest number of tweets.
     description
     total_tweets : val(a)
   }
-
 }
 ```
 
@@ -266,7 +328,14 @@ Find users with the highest number of tweets.
 ## Query 8: 
 Similarly, we could find the users who are most mentioned. This time, let us reverse traverse the `mention` edge and also find the tweets they are mentioned in.
 
-`
+This requires `@reverse` directive added to the schema, 
+
+```sh
+mention: uid @reverse .`
+```
+
+Here's the query
+
 ```
 {
   var(func: has(user_id)) {
@@ -290,11 +359,13 @@ Similarly, we could find the users who are most mentioned. This time, let us rev
 }
 ```
 
+![query-6](./assets/query-6.png)
+
 ---
 
 ## Query 9
 
-We could add filtering during edge traversal in the nested block. Let's use query 6. In the example below, we add time filter to select only the tweets which are created after `2019-03-02T19:03:12Z"`. 
+We could add filters during edge traversals in the nested block. Let's use query 6 for the example below. We have added a filter to select only the tweets of a user, which are created after `2019-03-02T19:03:12Z`. 
 
 ```sh
 {
@@ -316,7 +387,10 @@ We could add filtering during edge traversal in the nested block. Let's use quer
 }
 ```
 
-
+![query-7](./assets/query-7.png)
 
 ---
+
+
+
 
