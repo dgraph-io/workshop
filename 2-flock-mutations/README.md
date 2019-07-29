@@ -95,7 +95,7 @@ Here are questions one could have during the schema design process,
 
 Q: Is it necessary to normalize the info in a tweet into a `Tweet` and `User` node? 
   
-A: Though it's not necessary, if not done the model would be highly denormalized. The author's info would be duplicated in every tweet. So this hampers, 
+A: Though it's not necessary, if not done, the model would be highly denormalized. The author's info would be duplicated in every tweet. So this hampers, 
 
 - Updates and deletes. 
 Let's say. The user wants to change the profile picture. With the denormalized approach, the new `profile_picture_url` update has to be propagated to all the tweets of the user. 
@@ -114,22 +114,23 @@ Schema and indices in Dgraph are flexible. These can be altered as your applicat
 
  It's not compulsory to add all the predicates into the schema. Indices are used
 to enhance query performance (not mutations). In the next chapter, we'll learn about adding
-index to schema based on the query requirements. 
+an index to schema based on the query requirements. 
 
 
-However, it's necesary to add entries for `edges` and the predicates those require `upserts` into the schema. 
+However, the predicates those require `upserts` into the schema. 
 
 
-From the model we saw that there are two edges. 
+From the model, we saw that there are two edges. 
 - `Author` 
 - `Mention`
 
-Edges are represented by `uid` keyword in the schema. Let's these entries to the schema using Ratel. 
+Edges are represented by `uid` keyword in the schema. Let's these entries to the schema using Ratel. Edges are also called as `uid predicates`. 
 
 ```
 mention: uid .
 author: uid .
 ```
+
 
 ---
 
@@ -137,7 +138,7 @@ author: uid .
 
 Dgraph doesn't support primary keys. The uniqueness of the value of a predicate has to ensured manually with the help of upserts.
 
-In Flock, twitter handle of users has to be unique. Having more than a node for a User with a given 
+In Flock, the twitter handle of users has to be unique. Having more than a node for a User with a given 
 twitter_handle would be invalid.
 
 Let's first list the predicates which need uniqueness constraint.
@@ -195,7 +196,7 @@ This applies to `Users` mentioned in the tweet too.
 ## Running Flock
 ---
 
-The setup instructions are described in [Flock's repo](https://github.com/dgraph-io/flock). Follow the instructions to get Flock up and running.
+The setup instructions are described in [Flock's repo](https://github.com/dgraph-io/flock). Follow the instructions to get Flock up and to run.
 
 We are using Docker-compose to run Flock.
 
