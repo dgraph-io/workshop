@@ -19,9 +19,9 @@ Flock is run using Docker-compose. Here are the installation links for Docker an
 
 # Chapters
 ---
-The workshop is composed of three sections. The first one optional, it's is meant for absolute beginners in Dgraph. 
+The workshop is composed of three sections. The first one optional, it's meant for absolute beginners to Dgraph. 
 
-- [Getting started with Dgraph](./1-getting-gtarted/README.md)
+- [Getting started with Dgraph](./1-getting-started/README.md)
   
  This chapter is the guide for getting started with Dgraph. It deals with basic operations like installation,
 nodes, edges, queries, and mutations. 
