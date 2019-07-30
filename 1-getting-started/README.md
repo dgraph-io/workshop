@@ -21,19 +21,16 @@
 
 ## Installing and running Dgraph using docker-compose
 - Download the `docker-compose.yml` present in this folder.
-- Export the persistent data directory. Since Dgraph is run using Docker containers, it is essential
+- Export the persistent data directory. Since Dgraph is run using Docker containers, it's nice
 to mount a directory on the host machine to persist the data across multiple runs.
+
 ```sh
 $ mkdir ./data
 $ export DATA_DIR=$(pwd)/data
 ```
-- Export UID. Permits to the Dgraph process running inside the container to write to the host directory.
-```sh
-$ export UID
-```
 
-- Adds the current user to the docker group. This allows the docker command-line tool to write to
-  Unix socket where docker daemon is listening.
+- If you're using Linux, you can optionally add the current user to the docker group. This allows you to run `docker` and `docker-compose` without needing root privileges.
+
 ```
 $ sudo usermod -aG docker $USER
 $ newgrp docker
@@ -47,7 +44,7 @@ $ newgrp docker
 
 ## Alpha
 
-Hosts edges(predicates) and indexes.
+Hosts edges (predicates) and indexes.
 
 ## Zero
 
@@ -59,13 +56,20 @@ Clients connect to Dgraph (Alpha) with queries, mutations, and schema updates.
 
 ## Node
 
-Nodes and Relationships are the fundamental units of abstraction in a Graph database.
+Nodes and Relationships are the fundamental units of abstraction in a graph database.
 
 ## Edges / Relationships
 
-Edges connect a node to other nodes or values, and they represent the relationship between them. Edges are unidirectional. An edge from A to B does not automatically generate the same edge from B to A. You can opt-in to generate the opposite edge by using the `@reverse` schema directive in Dgraph to describe bi-directional relationships.
+Edges connect a node to other nodes or values, and they represent the
+relationship between them. Edges are unidirectional. An edge from A to
+B does not automatically generate the same edge from B to A. You can
+opt-in to generate the opposite edge by using the `@reverse` schema
+directive in Dgraph to describe bi-directional relationships.
 
-Dgraph's horizontal scaling capability allows one to create millions or even billions of nodes and relationships.
+Dgraph is an edge-first graph database built like a search engine.
+Data is stored per-predicate (not per node), and traversals and
+indexes are optimized for low-latency. This allows you to create and
+serve millions or even billions of nodes and relationships.
 
 ## Traversals
 
@@ -78,6 +82,7 @@ hidden patterns in the data.
 
 ## Getting Started
 ### Step 1: Get your application graph on paper.
+
 Let's draw a simple graph and build it on Dgraph. Let's build a friendship graph with the following propertis:
 
 1. Every node represents a person, where each person has a name and an age.
@@ -132,7 +137,7 @@ Types string and dateTime have several index types.
   to achieve an efficient operation to count the number of edges.
 ---
 
-  Let's use Ratel to perform the first set of operations. Go to `localhost:8000`. Welcome to Ratel.
+  Let's use Ratel to perform the first set of operations. Go to `localhost:8000` and click the Latest version. Welcome to Ratel.
 
 ![Ratel](./assets/Ratel-ui.png)
 

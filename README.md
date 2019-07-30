@@ -1,7 +1,7 @@
 # Building Flock with Dgraph
 ---
 
-Welcome to "Building Flock with Dgraph."
+Welcome to "Building Flock with Dgraph".
 
 Flock builds a graph model on Dgraph. It makes use of the tweets data obtained directly from Twitter API.
 
