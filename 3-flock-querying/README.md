@@ -365,7 +365,7 @@ Here's the query
 
 ## Query 9
 
-We could add filters during edge traversals in the nested block. Let's use query 6 for the example below. We have added a filter to select only the tweets of a user, which are created after `2019-03-02T19:03:12Z`. 
+We could add filters during edge traversals in the nested block. Let's use [query 6](#query-6) for the example below. We have added a filter to select only the tweets of a user, which are created after `2019-03-02T19:03:12Z`. 
 
 ```sh
 {
