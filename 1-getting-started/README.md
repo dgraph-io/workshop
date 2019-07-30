@@ -44,22 +44,31 @@ $ newgrp docker
 ---
 
 ## Concepts
+
 ## Alpha
 
 Hosts edges(predicates) and indexes.
 
 ## Zero
-Controls the Dgraph cluster, assigns servers to a group and re-balances data between server groups.
+
+Handles cluster membership, transactions and ID generation.
+
+## Clients
+
+Clients connect to Dgraph (Alpha) with queries, mutations, and schema updates.
 
 ## Node
+
 Nodes and Relationships are the fundamental units of abstraction in a Graph database.
 
 ## Edges / Relationships
-Edges would connect the nodes, and they represent the relationship between them.
+
+Edges connect a node to other nodes or values, and they represent the relationship between them. Edges are unidirectional. An edge from A to B does not automatically generate the same edge from B to A. You can opt-in to generate the opposite edge by using the `@reverse` schema directive in Dgraph to describe bi-directional relationships.
 
 Dgraph's horizontal scaling capability allows one to create millions or even billions of nodes and relationships.
 
 ## Traversals
+
 Though it's possible to create nodes without any relationships between them, relationships are
 first-class citizens in Dgraph, by not utilizing the relationships and traversals across them you
 would be losing out on making use of the true potential of Dgraph.
@@ -69,7 +78,12 @@ hidden patterns in the data.
 
 ## Getting Started
 ### Step 1: Get your application graph on paper.
-Let's draw a simple graph and build it on Dgraph.
+Let's draw a simple graph and build it on Dgraph. Let's build a friendship graph with the following propertis:
+
+1. Every node represents a person, where each person has a name and an age.
+2. A `friend` edge from one node to another represents a friendship connection.
+
+Below you'll see the graph where Karthic is friends with Gary.
 
 ![Graph-App](./assets/graph-1.png)
 
@@ -85,16 +99,17 @@ friend: Is an edge (uid)
 - We have almost nailed the Dgraph schema!
 
 ```
-name: string
-age: int
-friend: uid
+name: string .
+age: int .
+friend: uid .
 ```
 
-- Int, string, float, bool, geo, DateTime, uid are the types available in Dgraph.
+- Dgraph has a rich set of data types: uid, int, string, float, bool, geo, and datetime.
 
-- Schemas are flexible in Dgraph. One could modify them anytime.
+- Schemas are flexible in Dgraph. You can modify them on-the-fly.
 
 ### Creating indexes
+
 - Indexes help you speed up queries.
 - An index has to be set on a predicate only if it's required for the queries.
 - For example, if your application needs to search a user by
