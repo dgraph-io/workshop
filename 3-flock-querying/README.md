@@ -298,7 +298,7 @@ For each of the `User` node, if we could find the number of `author` edge pointi
 Let's define and decipher the query 7. That is to find the users with the highest number of tweets. 
 
 
-![query](./assets/7.jpg)
+![query](./assets/7.png)
 
 Let's run the query using Ratel.
 
