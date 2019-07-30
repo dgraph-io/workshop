@@ -181,7 +181,7 @@ This query is similar to Query 1.
 Let's execute the query, and we should obtain the screen_names of users. Since we have set the `first` parameter to 10, the result should have a maximum of 10 nodes. 
 
 
-Copy one of the `user_id` from the result. We'll be using it in our next query.
+Copy one of the `screen_names` from the result. We'll be using it in our next query.
 
 ---
 
