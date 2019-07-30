@@ -331,7 +331,7 @@ Similarly, we could find the users who are most mentioned. This time, let us rev
 This requires `@reverse` directive added to the schema, 
 
 ```sh
-mention: uid @reverse .`
+mention: uid @reverse .
 ```
 
 Here's the query
