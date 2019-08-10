@@ -21,24 +21,7 @@
 
 ## Installing and running Dgraph using docker-compose
 - Download the `docker-compose.yml` present in this folder.
-- Export the persistent data directory. Since Dgraph is run using Docker containers, it's nice
-to mount a directory on the host machine to persist the data across multiple runs.
-
-```sh
-$ mkdir ./data
-$ export DATA_DIR=$(pwd)/data
-```
-
-- If you're using Linux, you can optionally add the current user to the docker group. This allows you to run `docker` and `docker-compose` without needing root privileges.
-
-```
-$ sudo usermod -aG docker $USER
-$ newgrp docker
-```
-
-- Run `docker-compose up`
-
----
+- Run Dgraph containers using `docker-compose up`.
 
 ## Concepts
 
