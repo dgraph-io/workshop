@@ -1,40 +1,42 @@
-version: "3.5"
+version: "3.2"
 services:
-  alpha1:
-    image: dgraph/dgraph:v1.0.16
-    container_name: alpha1
-    working_dir: /data/alpha1
-    labels:
-      cluster: flock-cluster
-    ports:
-    - 8080:8080
-    - 9080:9080
+  zero:
+    image: dgraph/dgraph:latest
     volumes:
-    - type: bind
-      source: $DATA_DIR
-      target: /data
-      read_only: false
-    command: dgraph alpha --my=alpha1:7080 --lru_mb=1024 --zero=zero1:5080
-  zero1:
-    image: dgraph/dgraph:v1.0.16
-    container_name: zero1
-    working_dir: /data/zero1
-    labels:
-      cluster: flock-cluster
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
     ports:
-    - 5080:5080
-    - 6080:6080
+      - 5080:5080
+      - 6080:6080
+    restart: on-failure
+    command: dgraph zero --my=zero:5080
+  server:
+    image: dgraph/dgraph:latest
     volumes:
-    - type: bind
-      source: $DATA_DIR
-      target: /data
-      read_only: false
-    command: dgraph zero --my=zero1:5080 --idx=1
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+    ports:
+      - 8080:8080
+      - 9080:9080
+    restart: on-failure
+    command: dgraph alpha --my=server:7080 --lru_mb=2048 --zero=zero:5080
   ratel:
-    image: dgraph/dgraph:v1.0.16
-    container_name: ratel
-    labels:
-      cluster: flock-cluster
+    image: dgraph/dgraph:latest
+    volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
     ports:
-    - 8000:8000
-    command: dgraph-ratel 
+      - 8000:8000
+    command: dgraph-ratel
+
+volumes:
+  dgraph:
