@@ -6,7 +6,7 @@ Dgraph's query language is called GraphQL+-. It's inspired by original GraphQL s
 
 Let's recap the graph model of the Flock,
 
-![Graph](./assets/graph-3.JPG)
+![Graph](./assets/graph-1.png)
 
 ---
 
