@@ -65,7 +65,7 @@ Here, we'll call the relationship between `Tweets` and `Users` as `Author` and `
 
 **Step 3:** Draw the application graph with Nodes and Edges
 
-![Graph-3](./assets/graph-3.JPG)
+![Graph-3](./assets/graph-3.png)
 
 ---
 
@@ -83,7 +83,7 @@ Let's identify the fields that would belong to a User,
 
 Le's add these to the graph,
 
-![Graph-6](./assets/graph-6.jpg)
+![Graph-6](./assets/graph-6.png)
 
 Though conceptually it's easy to visualize the graph with types (Tweets, Users...),
 Dgraph doesn't support it yet.
